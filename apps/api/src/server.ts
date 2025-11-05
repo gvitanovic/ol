@@ -246,45 +246,59 @@ app.get('/api/vector-tiles/:z/:x/:y', async (req, res) => {
         `https://gis-dev.listlabs.net/tegola/maps/cadastral_municipalities/${z}/${x}/${y}.pbf`
     ];
 
-    const abortController = new AbortController();
-
-    for (const url of possibleUrls) {
-        try {
-            const response = await axios.get(url, {
-                timeout: 5000,
-                responseType: 'arraybuffer',
-                headers: {
-                    'User-Agent': 'ListLabs-BFF/1.0'
-                },
-                signal: abortController.signal
-            });
-
-            res.set('Content-Type', 'application/x-protobuf');
-            res.send(response.data);
-            abortController.abort();
-            return;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.code !== 'ABORT_ERR' && !error.message.includes('aborted')) {
-                    console.log(`Failed ${url}: ${error.response?.status} ${error.response?.statusText}`);
-                }
+    // Create promises for all URLs in parallel
+    const promises = possibleUrls.map((url, index) =>
+        axios.get(url, {
+            timeout: 5000,
+            responseType: 'arraybuffer',
+            headers: {
+                'User-Agent': 'ListLabs-BFF/1.0'
             }
-            if (abortController.signal.aborted) {
+        }).then(response => ({ success: true, response, url, index }))
+            .catch(error => ({ success: false, error, url, index }))
+    );
+
+    try {
+        const results = await Promise.allSettled(promises);
+
+        // Find the first successful response
+        for (const result of results) {
+            if (result.status === 'fulfilled' && result.value.success && 'response' in result.value) {
+                res.set('Content-Type', 'application/x-protobuf');
+                res.send(result.value.response.data);
                 return;
             }
         }
+
+        // Log all failures
+        results.forEach((result) => {
+            if (result.status === 'rejected') {
+                console.log(`Failed ${possibleUrls[0]}: Promise rejected - ${result.reason}`);
+            } else if (!result.value.success && 'error' in result.value) {
+                const axiosError = result.value.error;
+                if (axios.isAxiosError(axiosError)) {
+                    console.log(`Failed ${result.value.url}: ${axiosError.response?.status} ${axiosError.response?.statusText}`);
+                } else {
+                    console.log(`Failed ${result.value.url}: ${axiosError}`);
+                }
+            }
+        });
+
+        console.error(`All vector tile URLs failed for ${z}/${x}/${y}`);
+
+        res.status(404).json({
+            error: 'Vector tile not found',
+            message: `No vector tiles found for ${z}/${x}/${y}`,
+            attemptedUrls: possibleUrls
+        });
+    } catch (error) {
+        console.error(`Unexpected error in vector tiles endpoint:`, error);
+        res.status(500).json({
+            error: 'Internal server error',
+            message: 'Failed to fetch vector tiles'
+        });
     }
-
-    console.error(`All vector tile URLs failed for ${z}/${x}/${y}`);
-
-    res.status(404).json({
-        error: 'Vector tile not found',
-        message: `No vector tiles found for ${z}/${x}/${y}`,
-        attemptedUrls: possibleUrls
-    });
-});
-
-app.get('/api/features/:id', async (req, res) => {
+}); app.get('/api/features/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
