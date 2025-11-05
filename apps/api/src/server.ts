@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import { DataService } from './services/dataService';
+import { MockDataService } from './mocks';
 
 // move to env vars later
 const PORT = process.env.PORT || 3001;
@@ -38,6 +39,9 @@ app.get('/api/municipalities/:number', DataService.municipalityByNumber);
 app.get('/api/vector-tiles/capabilities', DataService.vectorTileCapabilities);
 app.get('/api/vector-tiles/:z/:x/:y', DataService.vectorTile);
 
+// GeoJSON endpoint for development/debugging
+app.get('/api/parcels/geojson', DataService.parcelsGeoJSON);
+
 // WMS endpoints
 app.get('/api/wms/capabilities', DataService.wmsCapabilities);
 app.get('/api/wms', DataService.wms);
@@ -59,7 +63,7 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    const mockMode = process.env.USE_MOCK_DATA === 'true';
+    const mockMode = MockDataService.isEnabled();
     console.log(`🚀 BFF API server running on http://localhost:${PORT}`);
     console.log(`📊 Mock mode: ${mockMode ? '🎭 ENABLED' : '🌐 DISABLED'}`);
     console.log(`🏥 Health check: http://localhost:${PORT}/health`);

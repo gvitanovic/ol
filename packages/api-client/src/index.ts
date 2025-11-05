@@ -79,13 +79,13 @@ export class GISApiClient {
     }
 
     getVectorTileCapabilitiesUrl(): string {
-        // Direct Tegola capabilities URL as per requirements
-        return 'https://gis-dev.listlabs.net/api/tegola/tegola-capabilities';
+        // Use BFF proxy endpoint for vector tile capabilities
+        return `${this.baseUrl}/vector-tiles/capabilities`;
     }
 
     getVectorTileUrl(): string {
-        // Direct Tegola URL for cadastral_parcels layer
-        return 'https://gis-dev.listlabs.net/tegola/maps/cadastral_parcels/{z}/{x}/{y}.pbf';
+        // Use BFF proxy endpoint for vector tiles
+        return `${this.baseUrl}/vector-tiles/{z}/{x}/{y}`;
     }
 
     getWMSUrl(): string {

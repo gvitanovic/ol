@@ -1,0 +1,94 @@
+{
+    "count": 6591,
+    "next": "https://gis-dev.listlabs.net/api/dkp/parcels/?limit=100&offset=100",
+    "previous": null,
+    "results": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "id": 1,
+                "type": "Feature",
+                "geometry": {
+                    "type": "MultiPolygon",
+                    "coordinates": [
+                        [
+                            [
+                                [
+                                    494498.42,
+                                    5118854.73
+                                ],
+                                [
+                                    494496.88,
+                                    5118849.36
+                                ],
+                                [
+                                    494499.44,
+                                    5118848.64
+                                ],
+                                [
+                                    494509.18,
+                                    5118845.93
+                                ],
+                                [
+                                    494509.8,
+                                    5118845.75
+                                ],
+                                [
+                                    494511.54,
+                                    5118851.38
+                                ],
+                                [
+                                    494498.42,
+                                    5118854.73
+                                ]
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "parcel_number": "4525/3",
+                    "area": "77.31",
+                    "cadastral_municipality": "318680"
+                }
+            },
+            {
+                "id": 714,
+                "type": "Feature",
+                "geometry": {
+                    "type": "MultiPolygon",
+                    "coordinates": [
+                        [
+                            [
+                                [
+                                    494600.0,
+                                    5118900.0
+                                ],
+                                [
+                                    494610.0,
+                                    5118900.0
+                                ],
+                                [
+                                    494610.0,
+                                    5118910.0
+                                ],
+                                [
+                                    494600.0,
+                                    5118910.0
+                                ],
+                                [
+                                    494600.0,
+                                    5118900.0
+                                ]
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "parcel_number": "714",
+                    "area": "100.0",
+                    "cadastral_municipality": "318680"
+                }
+            }
+        ]
+    }
+}

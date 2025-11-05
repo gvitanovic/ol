@@ -1,0 +1,63 @@
+{
+    "version": "0.20.0",
+    "maps": [
+        {
+            "name": "cadastral_municipalities",
+            "attribution": "",
+            "bounds": [
+                -180,
+                -85.0511,
+                180,
+                85.0511
+            ],
+            "center": [
+                16.5166646,
+                43.7333304,
+                12
+            ],
+            "tiles": [
+                "https://gis-dev.listlabs.net/tegola/maps/cadastral_municipalities/{z}/{x}/{y}.pbf"
+            ],
+            "capabilities": "https://gis-dev.listlabs.net/tegola/capabilities/cadastral_municipalities.json",
+            "layers": [
+                {
+                    "name": "cadastral_municipalities",
+                    "tiles": [
+                        "https://gis-dev.listlabs.net/tegola/maps/cadastral_municipalities/cadastral_municipalities/{z}/{x}/{y}.pbf"
+                    ],
+                    "minzoom": 1,
+                    "maxzoom": 20
+                }
+            ]
+        },
+        {
+            "name": "cadastral_parcels",
+            "attribution": "",
+            "bounds": [
+                -180,
+                -85.0511,
+                180,
+                85.0511
+            ],
+            "center": [
+                16.5166646,
+                43.7333304,
+                12
+            ],
+            "tiles": [
+                "https://gis-dev.listlabs.net/tegola/maps/cadastral_parcels/{z}/{x}/{y}.pbf"
+            ],
+            "capabilities": "https://gis-dev.listlabs.net/tegola/capabilities/cadastral_parcels.json",
+            "layers": [
+                {
+                    "name": "cadastral_parcels",
+                    "tiles": [
+                        "https://gis-dev.listlabs.net/tegola/maps/cadastral_parcels/cadastral_parcels/{z}/{x}/{y}.pbf"
+                    ],
+                    "minzoom": 1,
+                    "maxzoom": 20
+                }
+            ]
+        }
+    ]
+}

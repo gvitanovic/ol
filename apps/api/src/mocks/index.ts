@@ -2,16 +2,17 @@ import { Request, Response } from 'express';
 import { mockParcelsList, findParcelById } from './parcels';
 import { mockMunicipalitiesList, findMunicipalityByNumber } from './municipalities';
 import { mockVectorTileCapabilities, mockWMSCapabilities, mockWMSImage, mockVectorTile } from './tiles';
+import { OpenApiMockService } from './openApiMockService';
+import { getListLabsGeoJSON } from './openApiData';
 
-// Environment variable to toggle mock mode
-export const USE_MOCK_DATA = process.env.USE_MOCK_DATA === 'true';
+// export const USE_MOCK_DATA = process.env.USE_MOCK_DATA === 'true';
+export const USE_MOCK_DATA = false; // Enable mock mode for testfals
 
 export class MockDataService {
     static isEnabled(): boolean {
         return USE_MOCK_DATA;
     }
 
-    // Health endpoint
     static health(req: Request, res: Response) {
         res.json({
             status: 'ok',
@@ -20,7 +21,6 @@ export class MockDataService {
         });
     }
 
-    // Parcels endpoints
     static parcels(req: Request, res: Response) {
         console.log('🎭 Using mock data for parcels list');
         res.json(mockParcelsList);
@@ -41,7 +41,6 @@ export class MockDataService {
         res.json(parcel);
     }
 
-    // Features endpoint (legacy)
     static featureById(req: Request, res: Response) {
         const { id } = req.params;
         console.log(`🎭 Using mock data for feature ${id}`);
@@ -54,7 +53,6 @@ export class MockDataService {
             });
         }
 
-        // Transform to legacy format
         const feature = {
             id: parcel.id,
             area: parseFloat(parcel.properties.area) || 0,
@@ -66,7 +64,6 @@ export class MockDataService {
         res.json(feature);
     }
 
-    // Municipalities endpoints
     static municipalities(req: Request, res: Response) {
         console.log('🎭 Using mock data for municipalities list');
         res.json(mockMunicipalitiesList);
@@ -87,21 +84,18 @@ export class MockDataService {
         res.json(municipality);
     }
 
-    // Vector tiles endpoints
     static vectorTileCapabilities(req: Request, res: Response) {
         console.log('🎭 Using mock data for vector tile capabilities');
         res.json(mockVectorTileCapabilities);
     }
 
-    static vectorTile(req: Request, res: Response) {
+    static async vectorTile(req: Request, res: Response) {
         const { z, x, y } = req.params;
-        console.log(`🎭 Using mock data for vector tile ${z}/${x}/${y}`);
+        console.log(`🎭 Using ListLabs data for vector tile ${z}/${x}/${y}`);
 
-        res.set('Content-Type', 'application/x-protobuf');
-        res.send(mockVectorTile);
+        return await OpenApiMockService.getVectorTile(req, res);
     }
 
-    // WMS endpoints
     static wmsCapabilities(req: Request, res: Response) {
         console.log('🎭 Using mock data for WMS capabilities');
         res.set('Content-Type', 'application/xml');
@@ -112,5 +106,11 @@ export class MockDataService {
         console.log('🎭 Using mock data for WMS GetMap');
         res.set('Content-Type', 'image/png');
         res.send(mockWMSImage);
+    }
+
+    static parcelsGeoJSON(req: Request, res: Response) {
+        console.log('🎭 Using mock data for parcels GeoJSON');
+
+        res.json(getListLabsGeoJSON());
     }
 }
