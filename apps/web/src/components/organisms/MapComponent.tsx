@@ -25,49 +25,11 @@ export const MapComponent = () => {
     useLayoutEffect(() => {
         if (!map || !mapRef.current) return;
 
-        const containerRect = mapRef.current.getBoundingClientRect();
-
-        if (containerRect.width === 0 || containerRect.height === 0) {
-            console.warn('️Map container has zero dimensions, delaying initialization');
-            const timeoutId = setTimeout(() => {
-                if (mapRef.current) {
-                    const newRect = mapRef.current.getBoundingClientRect();
-                    if (newRect.width > 0 && newRect.height > 0) {
-                        map.updateSize();
-                    }
-                }
-            }, 100);
-
-            return () => clearTimeout(timeoutId);
-        }
-
         map.setTarget(mapRef.current);
-
-        // Synchronous size update
-        requestAnimationFrame(() => {
-            map.updateSize();
-        });
-
-        // React-idiomatic delayed map size update
-        const sizeUpdateTimeout = setTimeout(() => {
-            map.updateSize();
-        }, 200);
-
-        // Set up ResizeObserver for responsive sizing
-        const resizeObserver = new ResizeObserver(() => {
-            map.updateSize();
-        });
-        resizeObserver.observe(mapRef.current);
+        map.updateSize();
 
         return () => {
             try {
-                if (resizeObserver) {
-                    resizeObserver.disconnect();
-                }
-
-                // Clean up timeout
-                clearTimeout(sizeUpdateTimeout);
-
                 if (map) {
                     map.setTarget(undefined);
                 }
@@ -80,7 +42,6 @@ export const MapComponent = () => {
     useEffect(() => {
         if (!map) return;
 
-        // Clear existing layers except base layer
         const layers = map.getLayers().getArray();
         layers.forEach((layer, index) => {
             if (index > 0) {
@@ -118,7 +79,6 @@ export const MapComponent = () => {
                 clearSelection();
                 setClickedCoordinate(null);
 
-                // Force cadastral layer to re-render to clear highlighting
                 const cadastralLayer = getCadastralParcelsLayer();
                 if (cadastralLayer) {
                     cadastralLayer.changed();
@@ -171,7 +131,7 @@ export const MapComponent = () => {
     useEffect(() => {
         if (map) {
             map.render();
-            console.info('⚙️ Forced map render after CORINE visibility sync');
+            console.info('Forced map render after CORINE visibility sync');
         }
     }, [corineVisible, setCorineVisibility, map]);
 
