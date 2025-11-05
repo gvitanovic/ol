@@ -1,0 +1,1115 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API docs",
+        "description": "Swagger docs for listlabs-gis API",
+        "contact": {
+            "email": "developers@listlabs.net"
+        },
+        "version": "v1"
+    },
+    "host": "gis-dev.listlabs.net",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/api",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "security": [
+        {
+            "JWT": []
+        }
+    ],
+    "paths": {
+        "/dkp/municipalities/": {
+            "get": {
+                "operationId": "cadastral_municipality_list",
+                "description": "List all cadastral municipalities. Public access. Supports pagination with limit and offset parameters.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CadastralMunicipality"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Cadastral Municipalities"
+                ]
+            },
+            "post": {
+                "operationId": "cadastral_municipality_create",
+                "description": "Create a new cadastral municipality. Requires authentication.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CadastralMunicipality"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralMunicipality"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "Cadastral Municipalities"
+                ]
+            },
+            "parameters": []
+        },
+        "/dkp/municipalities/{municipality_number}/": {
+            "get": {
+                "operationId": "cadastral_municipality_detail",
+                "description": "Retrieve a cadastral municipality by municipality number. Public access.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralMunicipality"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Municipalities"
+                ]
+            },
+            "put": {
+                "operationId": "cadastral_municipality_update",
+                "description": "Update a cadastral municipality. Requires authentication.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CadastralMunicipality"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralMunicipality"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Municipalities"
+                ]
+            },
+            "patch": {
+                "operationId": "cadastral_municipality_partial_update",
+                "description": "Partially update a cadastral municipality. Requires authentication.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CadastralMunicipality"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralMunicipality"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Municipalities"
+                ]
+            },
+            "delete": {
+                "operationId": "cadastral_municipality_delete",
+                "description": "Delete a cadastral municipality. Requires authentication.",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Municipalities"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "municipality_number",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/dkp/parcels/": {
+            "get": {
+                "operationId": "cadastral_parcel_list",
+                "description": "List all cadastral parcels. Public access. Supports pagination with limit and offset parameters.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CadastralParcel"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Cadastral Parcels"
+                ]
+            },
+            "post": {
+                "operationId": "cadastral_parcel_create",
+                "description": "Create a new cadastral parcel. Requires authentication.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CadastralParcel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralParcel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "Cadastral Parcels"
+                ]
+            },
+            "parameters": []
+        },
+        "/dkp/parcels/{id}/": {
+            "get": {
+                "operationId": "cadastral_parcel_detail",
+                "description": "Retrieve a cadastral parcel by ID. Public access.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralParcel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Parcels"
+                ]
+            },
+            "put": {
+                "operationId": "cadastral_parcel_update",
+                "description": "Update a cadastral parcel. Requires authentication.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CadastralParcel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralParcel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Parcels"
+                ]
+            },
+            "patch": {
+                "operationId": "cadastral_parcel_partial_update",
+                "description": "Partially update a cadastral parcel. Requires authentication.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CadastralParcel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CadastralParcel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Parcels"
+                ]
+            },
+            "delete": {
+                "operationId": "cadastral_parcel_delete",
+                "description": "Delete a cadastral parcel. Requires authentication.",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "tags": [
+                    "Cadastral Parcels"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/tegola/tegola-capabilities": {
+            "get": {
+                "operationId": "tegola_tegola-capabilities_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "tegola"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/activate/{uidb64}/{token}/": {
+            "get": {
+                "operationId": "user_activate_read",
+                "description": "Activate user account via email confirmation link.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "uidb64",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "token",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/user/create/": {
+            "post": {
+                "operationId": "user_create_create",
+                "description": "Create a new user in the system.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/me/": {
+            "get": {
+                "operationId": "UserDetail",
+                "description": "Get details for request user",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "put": {
+                "operationId": "UserDetailUpdate",
+                "description": "Update details for request user",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserDetailUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/me/change-password/": {
+            "put": {
+                "operationId": "user_me_change-password_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordChange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordChange"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "patch": {
+                "operationId": "user_me_change-password_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordChange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordChange"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/organization/{id}/users/": {
+            "get": {
+                "operationId": "user_organization_users_list",
+                "description": "Lists users that belong to an organization, restricted by admin role.\nRegular users cannot access this view.",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/UserDetail"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/user/password-reset/": {
+            "post": {
+                "operationId": "user_password-reset_create",
+                "description": "Use this endpoint to send email to user with password reset key.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordReset"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordReset"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/password-reset/{uid}/confirm/": {
+            "post": {
+                "operationId": "user_password-reset_confirm_create",
+                "description": "Use this endpoint to finish reset password process.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordResetConfirm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordResetConfirm"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "uid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/user/token/": {
+            "post": {
+                "operationId": "user_token_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomTokenObtainPair"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomTokenObtainPair"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/token/logout/": {
+            "post": {
+                "operationId": "LogoutUser",
+                "description": "Logout user and  clean cookies",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/token/refresh/": {
+            "post": {
+                "operationId": "user_token_refresh_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomCookieTokenRefresh"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomCookieTokenRefresh"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/token/verify/": {
+            "post": {
+                "operationId": "user_token_verify_create",
+                "description": "Takes a token and indicates if it is valid.  This view provides no\ninformation about a token's fitness for a particular use.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TokenVerify"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TokenVerify"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": []
+        },
+        "/user/{id}/delete/": {
+            "delete": {
+                "operationId": "user_delete_delete",
+                "description": "Ensure users from other orgs cannot be deleted",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/user/{id}/edit/": {
+            "put": {
+                "operationId": "user_edit_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "patch": {
+                "operationId": "user_edit_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this user.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "CadastralMunicipality": {
+            "required": [
+                "municipality_number"
+            ],
+            "type": "object",
+            "properties": {
+                "municipality_number": {
+                    "title": "Municipality number",
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 1
+                },
+                "area": {
+                    "title": "Area",
+                    "type": "string",
+                    "format": "decimal",
+                    "x-nullable": true
+                },
+                "geom": {
+                    "title": "Geom",
+                    "type": "string",
+                    "x-nullable": true
+                }
+            }
+        },
+        "CadastralParcel": {
+            "required": [
+                "parcel_number",
+                "cadastral_municipality"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "parcel_number": {
+                    "title": "Parcel number",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "area": {
+                    "title": "Area",
+                    "type": "string",
+                    "format": "decimal",
+                    "x-nullable": true
+                },
+                "cadastral_municipality": {
+                    "title": "Cadastral municipality",
+                    "type": "string"
+                },
+                "geom": {
+                    "title": "Geom",
+                    "type": "string",
+                    "x-nullable": true
+                }
+            }
+        },
+        "User": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "password": {
+                    "title": "Lozinka",
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 8
+                }
+            }
+        },
+        "UserDetailUpdate": {
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "title": "First name",
+                    "type": "string",
+                    "maxLength": 127
+                },
+                "last_name": {
+                    "title": "Last name",
+                    "type": "string",
+                    "maxLength": 127
+                },
+                "language_preference": {
+                    "title": "Language preference",
+                    "type": "string",
+                    "enum": [
+                        "hr",
+                        "en"
+                    ]
+                }
+            }
+        },
+        "PasswordChange": {
+            "required": [
+                "new_password",
+                "old_password"
+            ],
+            "type": "object",
+            "properties": {
+                "new_password": {
+                    "title": "New password",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "old_password": {
+                    "title": "Old password",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "UserDetail": {
+            "required": [
+                "email"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "first_name": {
+                    "title": "First name",
+                    "type": "string",
+                    "maxLength": 127
+                },
+                "last_name": {
+                    "title": "Last name",
+                    "type": "string",
+                    "maxLength": 127
+                },
+                "username": {
+                    "title": "Username",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "organization_name": {
+                    "title": "Organization name",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "language_preference": {
+                    "title": "Language preference",
+                    "type": "string",
+                    "enum": [
+                        "hr",
+                        "en"
+                    ]
+                }
+            }
+        },
+        "PasswordReset": {
+            "required": [
+                "email"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "PasswordResetConfirm": {
+            "required": [
+                "new_password",
+                "token"
+            ],
+            "type": "object",
+            "properties": {
+                "new_password": {
+                    "title": "New password",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "token": {
+                    "title": "Token",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "CustomTokenObtainPair": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "password": {
+                    "title": "Password",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "CustomCookieTokenRefresh": {
+            "type": "object",
+            "properties": {
+                "access": {
+                    "title": "Access",
+                    "type": "string",
+                    "readOnly": true,
+                    "minLength": 1
+                }
+            }
+        },
+        "TokenVerify": {
+            "required": [
+                "token"
+            ],
+            "type": "object",
+            "properties": {
+                "token": {
+                    "title": "Token",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        }
+    }
+}
