@@ -1,29 +1,28 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 import { MockDataService } from '../mocks';
-import { type CadastralParcel } from '@list-labs/shared-types';
+import { authMiddleware, AuthenticatedRequest } from '../middleware/auth';
+import { type CadastralParcel } from '@gis-tools/shared-types';
 
 const GIS_API_BASE_URL = 'https://gis-dev.listlabs.net/api';
 const WMS_BASE_URL = 'https://ows.terrestris.de/osm/service';
 
-// Service interface that both mock and real services implement
 interface IDataService {
-    health(req: Request, res: Response): Promise<void> | void | any;
-    parcels(req: Request, res: Response): Promise<void> | void | any;
-    parcelById(req: Request, res: Response): Promise<void> | void | any;
-    featureById(req: Request, res: Response): Promise<void> | void | any;
-    municipalities(req: Request, res: Response): Promise<void> | void | any;
-    municipalityByNumber(req: Request, res: Response): Promise<void> | void | any;
-    vectorTileCapabilities(req: Request, res: Response): Promise<void> | void | any;
-    vectorTile(req: Request, res: Response): Promise<void> | void | any;
-    wmsCapabilities(req: Request, res: Response): Promise<void> | void | any;
-    wms(req: Request, res: Response): Promise<void> | void | any;
-    parcelsGeoJSON?(req: Request, res: Response): Promise<void> | void | any;
+    health(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    parcels(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    parcelById(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    featureById(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    municipalities(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    municipalityByNumber(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    vectorTileCapabilities(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    vectorTile(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    wmsCapabilities(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    wms(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
+    parcelsGeoJSON?(req: AuthenticatedRequest, res: Response): Promise<void> | void | any;
 }
 
-// Real/Production service implementation
 class RealDataService implements IDataService {
-    async health(req: Request, res: Response) {
+    async health(req: AuthenticatedRequest, res: Response) {
         res.json({
             status: 'ok',
             timestamp: new Date().toISOString(),
@@ -31,17 +30,27 @@ class RealDataService implements IDataService {
         });
     }
 
-    async parcels(req: Request, res: Response) {
+    async parcels(req: AuthenticatedRequest, res: Response) {
         try {
             const queryParams = new URLSearchParams(req.query as Record<string, string>);
             const url = `${GIS_API_BASE_URL}/dkp/parcels/?${queryParams}`;
             console.log(`Proxying parcels list to: ${url}`);
 
+            const backendHeaders = authMiddleware.addBackendAuthHeaders();
+            const userHeaders = authMiddleware.getUserContextHeaders(req);
+            const outgoingAuthHeaders = await authMiddleware.getOutgoingAuthHeaders('gis-api');
+
+            const headers = {
+                ...backendHeaders,
+                ...userHeaders,
+                ...outgoingAuthHeaders
+            };
+
+            console.log('Outgoing headers:', Object.keys(headers).filter(key => key.toLowerCase().includes('auth') || key.toLowerCase().includes('api')));
+
             const response = await axios.get(url, {
                 timeout: 10000,
-                headers: {
-                    'User-Agent': 'ListLabs-BFF/1.0'
-                }
+                headers
             });
 
             res.json(response.data);
@@ -63,18 +72,20 @@ class RealDataService implements IDataService {
         }
     }
 
-    async parcelById(req: Request, res: Response) {
+    async parcelById(req: AuthenticatedRequest, res: Response) {
         const { id } = req.params;
 
         try {
             const url = `${GIS_API_BASE_URL}/dkp/parcels/${id}/`;
             console.log(`Proxying parcel detail to: ${url}`);
 
+            const backendHeaders = authMiddleware.addBackendAuthHeaders();
+            const userHeaders = authMiddleware.getUserContextHeaders(req);
+            const headers = { ...backendHeaders, ...userHeaders };
+
             const response = await axios.get(url, {
                 timeout: 10000,
-                headers: {
-                    'User-Agent': 'ListLabs-BFF/1.0'
-                }
+                headers
             });
 
             const parcel: CadastralParcel = response.data;
@@ -114,7 +125,6 @@ class RealDataService implements IDataService {
 
             const parcel: CadastralParcel = response.data;
 
-            // Transform to legacy feature format
             const feature = {
                 id: parcel.id,
                 area: parseFloat(parcel.properties.area) || 0,
@@ -391,47 +401,47 @@ export class DataService {
         return ServiceFactory.getService();
     }
 
-    static async health(req: Request, res: Response) {
+    static async health(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().health(req, res);
     }
 
-    static async parcels(req: Request, res: Response) {
+    static async parcels(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().parcels(req, res);
     }
 
-    static async parcelById(req: Request, res: Response) {
+    static async parcelById(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().parcelById(req, res);
     }
 
-    static async featureById(req: Request, res: Response) {
+    static async featureById(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().featureById(req, res);
     }
 
-    static async municipalities(req: Request, res: Response) {
+    static async municipalities(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().municipalities(req, res);
     }
 
-    static async municipalityByNumber(req: Request, res: Response) {
+    static async municipalityByNumber(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().municipalityByNumber(req, res);
     }
 
-    static async parcelsGeoJSON(req: Request, res: Response) {
+    static async parcelsGeoJSON(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().parcelsGeoJSON?.(req, res);
     }
 
-    static async vectorTileCapabilities(req: Request, res: Response) {
+    static async vectorTileCapabilities(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().vectorTileCapabilities(req, res);
     }
 
-    static async vectorTile(req: Request, res: Response) {
+    static async vectorTile(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().vectorTile(req, res);
     }
 
-    static async wmsCapabilities(req: Request, res: Response) {
+    static async wmsCapabilities(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().wmsCapabilities(req, res);
     }
 
-    static async wms(req: Request, res: Response) {
+    static async wms(req: AuthenticatedRequest, res: Response) {
         return DataService.getServiceProxy().wms(req, res);
     }
 }

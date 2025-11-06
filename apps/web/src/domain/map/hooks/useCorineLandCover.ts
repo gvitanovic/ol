@@ -2,7 +2,7 @@ import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import { useRef, useState, useCallback } from 'react';
 
-import { GISApiClient } from '@list-labs/api-client';
+import { GISApiClient } from '@gis-tools/api-client';
 
 export const useCorineLandCover = () => {
     const [isVisible, setIsVisible] = useState(false);

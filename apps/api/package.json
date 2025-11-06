@@ -6,13 +6,17 @@
     "scripts": {
         "dev": "tsx watch src/server.ts",
         "build": "tsc",
-        "start": "node dist/server.js"
+        "start": "node dist/server.js",
+        "test:jwt": "tsx scripts/test-jwt.ts",
+        "test:auth": "tsx scripts/test-auth-flow.ts"
     },
     "dependencies": {
-        "@list-labs/shared-types": "workspace:*",
+        "@gis-tools/shared-types": "workspace:*",
+        "@types/jsonwebtoken": "^9.0.10",
         "axios": "^1.6.0",
         "cors": "^2.8.5",
-        "express": "^4.18.2"
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.2"
     },
     "devDependencies": {
         "@types/cors": "^2.8.17",

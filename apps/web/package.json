@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@list-labs/api-client": "workspace:*",
-    "@list-labs/shared-types": "workspace:*",
+    "@gis-tools/api-client": "workspace:*",
+    "@gis-tools/shared-types": "workspace:*",
     "@types/ol": "^7.0.0",
     "ol": "^10.6.1",
     "react": "^19.1.1",

@@ -1,4 +1,4 @@
-import { type CadastralParcel } from '@list-labs/shared-types';
+import { type CadastralParcel } from '@gis-tools/shared-types';
 import { mockCadastralParcels } from './openApiData';
 
 // Use the real ListLabs data from openApiData.ts instead of static mock data

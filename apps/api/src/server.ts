@@ -1,7 +1,9 @@
 import cors from 'cors';
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import { DataService } from './services/dataService';
 import { MockDataService } from './mocks';
+import { authMiddleware, AuthenticatedRequest } from './middleware/auth';
 
 // move to env vars later
 const PORT = process.env.PORT || 3001;
@@ -21,8 +23,98 @@ app.use((req, res, next) => {
     next();
 });
 
-// Health endpoint
+// Apply authentication middleware
+// app.use(authMiddleware.validateClientAuth);
+
+// Health endpoint (infrastructure - no /api prefix for Docker/K8s compatibility)
 app.get('/health', DataService.health);
+
+// ==========================================
+// AUTHENTICATION ENDPOINTS
+// ==========================================
+
+app.post('/api/auth/refresh', (req: express.Request, res: express.Response) => {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+        return res.status(400).json({
+            error: 'Missing refresh token',
+            message: 'Refresh token is required'
+        });
+    }
+
+    const result = authMiddleware.refreshAccessToken(refreshToken);
+
+    if (result.success) {
+        res.json({
+            accessToken: result.accessToken,
+            tokenType: 'Bearer',
+            expiresIn: 900 // 15 minutes
+        });
+    } else {
+        res.status(401).json({
+            error: 'Invalid refresh token',
+            message: result.error
+        });
+    }
+});
+
+app.post('/api/auth/generate-tokens', (req: express.Request, res: express.Response) => {
+    const { userId, email, name, roles } = req.body;
+
+    if (!userId || !email) {
+        return res.status(400).json({
+            error: 'Missing required fields',
+            message: 'userId and email are required'
+        });
+    }
+
+    try {
+        // Check if JWT_SECRET is available
+        const jwtSecret = process.env.JWT_SECRET || 'your-jwt-secret-change-in-production';
+
+        const accessTokenPayload = {
+            sub: userId,
+            email,
+            name,
+            roles: roles || ['user'],
+            iat: Math.floor(Date.now() / 1000),
+            iss: 'gis-bff',
+            aud: 'gis-client'
+        };
+
+        const accessToken = jwt.sign(accessTokenPayload, jwtSecret, {
+            expiresIn: '15m',
+            algorithm: 'HS256'
+        } as any);
+
+        const refreshToken = authMiddleware.generateRefreshToken(userId, email);
+
+        res.json({
+            accessToken,
+            refreshToken,
+            tokenType: 'Bearer',
+            expiresIn: 900, // 15 minutes
+            user: {
+                id: userId,
+                email,
+                name,
+                roles
+            }
+        });
+
+    } catch (error) {
+        console.error('Token generation failed:', error);
+        res.status(500).json({
+            error: 'Token generation failed',
+            message: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+});
+
+// ==========================================
+// BUSINESS LOGIC ENDPOINTS
+// ==========================================
 
 // Parcels endpoints
 app.get('/api/parcels', DataService.parcels);

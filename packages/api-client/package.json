@@ -1,5 +1,5 @@
 {
-    "name": "@list-labs/api-client",
+    "name": "@gis-tools/api-client",
     "version": "1.0.0",
     "private": true,
     "main": "dist/index.js",
@@ -15,7 +15,7 @@
         "dev": "tsc -w"
     },
     "dependencies": {
-        "@list-labs/shared-types": "workspace:*",
+        "@gis-tools/shared-types": "workspace:*",
         "axios": "^1.6.0"
     },
     "devDependencies": {

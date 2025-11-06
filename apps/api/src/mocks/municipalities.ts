@@ -1,4 +1,4 @@
-import { type CadastralMunicipality } from '@list-labs/shared-types';
+import { type CadastralMunicipality } from '@gis-tools/shared-types';
 
 export const mockMunicipalities: CadastralMunicipality[] = [
     {

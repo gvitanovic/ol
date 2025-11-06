@@ -1,5 +1,5 @@
 {
-    "name": "@list-labs/shared-types",
+    "name": "@gis-tools/shared-types",
     "version": "1.0.0",
     "private": true,
     "main": "dist/index.js",

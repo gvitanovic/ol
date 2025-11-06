@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { GISApiClient } from '@list-labs/api-client';
-import type { MapFeature } from '@list-labs/shared-types';
+import { GISApiClient } from '@gis-tools/api-client';
+import type { MapFeature } from '@gis-tools/shared-types';
 
 export const useFeatureInteraction = () => {
     const [loading, setLoading] = useState(false);

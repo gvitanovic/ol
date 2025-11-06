@@ -4,7 +4,7 @@ import { Style, Fill, Stroke } from 'ol/style';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
 
-import { GISApiClient } from '@list-labs/api-client';
+import { GISApiClient } from '@gis-tools/api-client';
 
 import { colors } from '../../../styles/theme';
 

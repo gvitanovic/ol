@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { CadastralParcel, CadastralMunicipality } from '@list-labs/shared-types';
+import type { CadastralParcel, CadastralMunicipality } from '@gis-tools/shared-types';
 
 const BFF_BASE_URL = 'http://localhost:3001/api';
 
