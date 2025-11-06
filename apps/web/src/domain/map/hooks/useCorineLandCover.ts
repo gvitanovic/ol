@@ -43,12 +43,12 @@ export const useCorineLandCover = () => {
         return corineLayer;
     };
 
-    const getCorineLayer = () => {
+    const getCorineLayer = useCallback(() => {
         if (!corineLayerRef.current) {
             return createCorineLayer();
         }
         return corineLayerRef.current;
-    };
+    }, []);
 
     const getVisibility = useCallback(() => {
         return corineLayerRef.current ? corineLayerRef.current.getVisible() : false;
@@ -71,23 +71,23 @@ export const useCorineLandCover = () => {
         }
     }, []);
 
-    const refreshLayer = () => {
+    const refreshLayer = useCallback(() => {
         if (corineLayerRef.current) {
             corineLayerRef.current.getSource()?.refresh();
         }
-    };
+    }, []);
 
     const toggleVisibility = useCallback(() => {
         const newVisibility = !isVisible;
         setVisibility(newVisibility);
     }, [isVisible, setVisibility]);
 
-    const cleanup = () => {
+    const cleanup = useCallback(() => {
         if (corineLayerRef.current) {
             corineLayerRef.current.dispose();
             corineLayerRef.current = null;
         }
-    };
+    }, []);
 
     return {
         corineLayerRef,

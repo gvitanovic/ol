@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import MVT from 'ol/format/MVT';
 import { Style, Fill, Stroke } from 'ol/style';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -34,25 +34,25 @@ export const useCadastralParcelsLayer = () => {
         return cadastralLayer;
     };
 
-    const getCadastralParcelsLayer = () => {
+    const getCadastralParcelsLayer = useCallback(() => {
         if (!cadastralLayerRef.current) {
             return createCadastralParcelsLayer();
         }
         return cadastralLayerRef.current;
-    };
+    }, []);
 
-    const updateCadastralLayerStyle = (styleFunction: (feature: any) => Style) => {
+    const updateCadastralLayerStyle = useCallback((styleFunction: (feature: any) => Style) => {
         if (cadastralLayerRef.current) {
             cadastralLayerRef.current.setStyle(styleFunction);
         }
-    };
+    }, []);
 
-    const cleanup = () => {
+    const cleanup = useCallback(() => {
         if (cadastralLayerRef.current) {
             cadastralLayerRef.current.dispose();
             cadastralLayerRef.current = null;
         }
-    };
+    }, []);
 
     return {
         getCadastralParcelsLayer,

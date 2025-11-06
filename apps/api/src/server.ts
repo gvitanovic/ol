@@ -2,7 +2,7 @@ import cors from 'cors';
 import axios from 'axios';
 import express from 'express';
 
-import { type CadastralParcel } from '@list-labs/shared-types';
+import type { CadastralParcel } from '@list-labs/shared-types';
 
 // move to env vars later
 const PORT = process.env.PORT || 3001;

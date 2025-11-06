@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { type MapFeature } from '@list-labs/shared-types';
+import type { MapFeature } from '@list-labs/shared-types';
 
 import { useMap } from '../../domain/map/context/MapContext';
 
