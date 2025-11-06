@@ -16,7 +16,7 @@ export const MapComponent = () => {
     const mapRef = useRef<HTMLDivElement>(null);
 
     const { getCadastralParcelsLayer, updateCadastralLayerStyle, cleanup: cleanupCadastral } = useCadastralParcelsLayer();
-    const { getCorineLayer, setVisibility: setCorineVisibility, toggleVisibility: handleToggleCorine, cleanup: cleanupCorine, isVisible: corineVisible } = useCorineLandCover();
+    const { getCorineLayer, toggleVisibility: handleToggleCorine, cleanup: cleanupCorine, isVisible: corineVisible } = useCorineLandCover();
     const { selectedFeature, loading, error, fetchFeatureById, clearSelection } = useFeatureInteraction();
 
     const [clickedCoordinate, setClickedCoordinate] = useState<number[] | null>(null);
@@ -127,13 +127,6 @@ export const MapComponent = () => {
 
         updateCadastralLayerStyle(getFeatureStyle);
     }, [highlightedFeature, getCadastralParcelsLayer, updateCadastralLayerStyle]);
-
-    useEffect(() => {
-        if (map) {
-            map.render();
-            console.info('Forced map render after CORINE visibility sync');
-        }
-    }, [corineVisible, setCorineVisibility, map]);
 
     return (
         <div

@@ -1,6 +1,6 @@
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useCallback, useState } from 'react';
 
 import { GISApiClient } from '@list-labs/api-client';
 
@@ -38,8 +38,6 @@ export const useCorineLandCover = () => {
 
         corineLayerRef.current = corineLayer;
 
-        setIsVisible(false);
-
         return corineLayer;
     };
 
@@ -55,8 +53,8 @@ export const useCorineLandCover = () => {
     }, []);
 
     const setVisibility = useCallback((visible: boolean) => {
+        setIsVisible(visible);
         if (corineLayerRef.current) {
-            setIsVisible(visible);
             corineLayerRef.current.setVisible(visible);
 
             if (visible) {
