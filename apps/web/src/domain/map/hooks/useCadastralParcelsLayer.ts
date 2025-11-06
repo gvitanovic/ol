@@ -21,10 +21,10 @@ export const useCadastralParcelsLayer = () => {
             source: cadastralSource,
             style: new Style({
                 fill: new Fill({
-                    color: colors.primary.light,
+                    color: colors.tile.fill,
                 }),
                 stroke: new Stroke({
-                    color: colors.primary.DEFAULT,
+                    color: colors.tile.stroke,
                     width: 1,
                 }),
             }),

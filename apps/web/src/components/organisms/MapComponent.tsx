@@ -20,7 +20,6 @@ export const MapComponent = () => {
     const { selectedFeature, loading, error, fetchFeatureById, clearSelection } = useFeatureInteraction();
 
     const [clickedCoordinate, setClickedCoordinate] = useState<number[] | null>(null);
-    const [highlightedFeature, setHighlightedFeature] = useState<any>(null);
 
     useLayoutEffect(() => {
         if (!map || !mapRef.current) return;
@@ -60,8 +59,29 @@ export const MapComponent = () => {
                 return feature;
             });
 
+            const cadastralLayer = getCadastralParcelsLayer();
+            if (!cadastralLayer) return;
+
             if (feature) {
-                setHighlightedFeature(feature);
+                const getFeatureStyle = (mapFeature: any) => {
+                    const isHighlighted = mapFeature.getId() === feature.getId();
+
+                    return new Style({
+                        fill: new Fill({
+                            color: isHighlighted
+                                ? colors.tile.highlighted.fill
+                                : colors.tile.fill,
+                        }),
+                        stroke: new Stroke({
+                            color: isHighlighted
+                                ? colors.tile.highlighted.stroke
+                                : colors.tile.stroke,
+                            width: isHighlighted ? 3 : 2,
+                        }),
+                    });
+                };
+
+                updateCadastralLayerStyle(getFeatureStyle);
 
                 const featureId = feature.getId() || feature.get('gid') || feature.get('id') || feature.get('objectid');
 
@@ -75,14 +95,23 @@ export const MapComponent = () => {
 
                 setClickedCoordinate(event.coordinate);
             } else {
-                setHighlightedFeature(null);
                 clearSelection();
                 setClickedCoordinate(null);
 
-                const cadastralLayer = getCadastralParcelsLayer();
-                if (cadastralLayer) {
-                    cadastralLayer.changed();
-                }
+                // Reset all features to normal style when no feature is clicked
+                const getFeatureStyle = () => {
+                    return new Style({
+                        fill: new Fill({
+                            color: colors.tile.fill,
+                        }),
+                        stroke: new Stroke({
+                            color: colors.tile.stroke,
+                            width: 2,
+                        }),
+                    });
+                };
+
+                updateCadastralLayerStyle(getFeatureStyle);
             }
         };
 
@@ -101,32 +130,6 @@ export const MapComponent = () => {
             }
         };
     }, [map]);
-
-    useEffect(() => {
-        const cadastralLayer = getCadastralParcelsLayer();
-        if (!cadastralLayer) return;
-
-        const getFeatureStyle = (feature: any) => {
-            const isHighlighted = highlightedFeature &&
-                feature.getId() === highlightedFeature.getId();
-
-            return new Style({
-                fill: new Fill({
-                    color: isHighlighted
-                        ? colors.tile.highlighted.fill
-                        : colors.tile.fill,
-                }),
-                stroke: new Stroke({
-                    color: isHighlighted
-                        ? colors.tile.highlighted.stroke
-                        : colors.tile.stroke,
-                    width: isHighlighted ? 3 : 2,
-                }),
-            });
-        };
-
-        updateCadastralLayerStyle(getFeatureStyle);
-    }, [highlightedFeature, getCadastralParcelsLayer, updateCadastralLayerStyle]);
 
     return (
         <div
@@ -165,7 +168,6 @@ export const MapComponent = () => {
                         onClose={() => {
                             clearSelection();
                             setClickedCoordinate(null);
-                            setHighlightedFeature(null);
                         }}
                     />
                 </div>
