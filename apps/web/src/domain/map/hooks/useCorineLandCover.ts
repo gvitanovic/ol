@@ -1,6 +1,6 @@
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { GISApiClient } from '@list-labs/api-client';
 
@@ -41,18 +41,18 @@ export const useCorineLandCover = () => {
         return corineLayer;
     };
 
-    const getCorineLayer = useCallback(() => {
+    const getCorineLayer = () => {
         if (!corineLayerRef.current) {
             return createCorineLayer();
         }
         return corineLayerRef.current;
-    }, []);
+    };
 
-    const getVisibility = useCallback(() => {
+    const getVisibility = () => {
         return corineLayerRef.current ? corineLayerRef.current.getVisible() : false;
-    }, []);
+    };
 
-    const setVisibility = useCallback((visible: boolean) => {
+    const setVisibility = (visible: boolean) => {
         setIsVisible(visible);
         if (corineLayerRef.current) {
             corineLayerRef.current.setVisible(visible);
@@ -67,25 +67,26 @@ export const useCorineLandCover = () => {
         } else {
             console.warn('Cannot set visibility: corineLayerRef.current is null');
         }
-    }, []);
+        console.log(`Corine land rendering`);
+    };
 
-    const refreshLayer = useCallback(() => {
+    const refreshLayer = () => {
         if (corineLayerRef.current) {
             corineLayerRef.current.getSource()?.refresh();
         }
-    }, []);
+    };
 
-    const toggleVisibility = useCallback(() => {
+    const toggleVisibility = () => {
         const newVisibility = !isVisible;
         setVisibility(newVisibility);
-    }, [isVisible, setVisibility]);
+    };
 
-    const cleanup = useCallback(() => {
+    const cleanup = () => {
         if (corineLayerRef.current) {
             corineLayerRef.current.dispose();
             corineLayerRef.current = null;
         }
-    }, []);
+    };
 
     return {
         corineLayerRef,

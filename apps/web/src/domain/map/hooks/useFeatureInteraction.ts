@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 import { GISApiClient } from '@list-labs/api-client';
 import type { MapFeature } from '@list-labs/shared-types';
@@ -8,7 +8,7 @@ export const useFeatureInteraction = () => {
     const [error, setError] = useState<string | null>(null);
     const [selectedFeature, setSelectedFeature] = useState<MapFeature | null>(null);
 
-    const fetchFeatureById = useCallback(async (id: string): Promise<MapFeature | null> => {
+    const fetchFeatureById = async (id: string): Promise<MapFeature | null> => {
         setLoading(true);
         setError(null);
 
@@ -27,6 +27,7 @@ export const useFeatureInteraction = () => {
             };
 
             setSelectedFeature(feature);
+            console.log('get feature')
 
             return feature;
         } catch (err) {
@@ -38,16 +39,16 @@ export const useFeatureInteraction = () => {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }
 
-    const clearSelection = useCallback(() => {
+    const clearSelection = () => {
         setSelectedFeature(null);
         setError(null);
-    }, []);
+    };
 
-    const clearError = useCallback(() => {
+    const clearError = () => {
         setError(null);
-    }, []);
+    };
 
     return {
         selectedFeature,
