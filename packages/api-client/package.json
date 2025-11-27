@@ -11,8 +11,8 @@
         }
     },
     "scripts": {
-        "build": "tsc",
-        "dev": "tsc -w"
+        "build": "tsc -b --force",
+        "dev": "tsc -b -w"
     },
     "dependencies": {
         "@list-labs/shared-types": "workspace:*",
